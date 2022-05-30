@@ -17,7 +17,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 ### Status
  <h4> 
-	🚧  ... Desapegax está 🚀 Em construção...  🚧
+	🚧  ... Api está 🚀 Em construção...  🚧
 </h4>
 
 ## Como instalar em sua maquina
