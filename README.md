@@ -5,6 +5,13 @@ podendo filtrar carros,modelos,marcas. Com autentinticação JWT utilizando toke
 ## Projeto
 - Api locadora de carros feito utilizando Laravel, e no front end utilizando o VueJS, para consumir dados da Api. 
 
+## :hammer: Funcionalidades do projeto
+
+- `Funcionalidade 1`: descrição da funcionalidade 1
+- `Funcionalidade 2`: descrição da funcionalidade 2
+- `Funcionalidade 2a`: descrição da funcionalidade 2a relacionada à funcionalidade 2
+- `Funcionalidade 3`: descrição da funcionalidade 3
+
 ## 🛠 Tecnologias
 
 As seguintes ferramentas foram usadas na construção do projeto:
@@ -20,6 +27,8 @@ As seguintes ferramentas foram usadas na construção do projeto:
 	🚧  ... Api está 🚀 Em construção...  🚧
 </h4>
 
-## Como instalar em sua maquina
+## 🛠️ Abrir e rodar o projeto
+
+**Apresente as instruções necessárias para abrir e executar o projeto**
 
 
