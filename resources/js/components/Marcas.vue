@@ -98,7 +98,7 @@
                nomeMarca: '',
                arquivoImagem: [],
                transacaoStatus: '',
-               transacaoDetalhes: [],
+               transacaoDetalhes: {},
            }
        },
        methods: {
@@ -123,12 +123,17 @@
                axios.post(this.urlBase,formData,config)
                .then( response => {
                    this.transacaoStatus = 'adicionado'
-                   this.transacaoDetalhes = response
-                   console.log(response.data.id)
+                   this.transacaoDetalhes = {
+                       message: `Marca ${response.data.nome} cadastrada`
+                   }
+                  
                })
-               .catch(erros => {
+               .catch(errors => {
                     this.transacaoStatus = 'erro'
-                    this.transacaoDetalhes = erros.response
+                    this.transacaoDetalhes = {
+                        message: errors.response.data.message,
+                        datas: errors.response.data.errors
+                    }
                   //console.log(erros.response.data.message)
                })
            }
