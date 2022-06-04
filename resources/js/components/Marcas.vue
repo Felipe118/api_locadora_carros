@@ -35,7 +35,15 @@
                 <!--Fim card de busca-->
                 <card-component titulo="Relação de marcas">
                     <template v-slot:conteudo>
-                        <table-component :dados="marcas" :titulos="['ID','Nome','Imagem']"></table-component>
+                        <table-component 
+                            :dados="marcas" 
+                            :titulos="{
+                                id: {titulo:'ID', tipo:'text'},
+                                nome: {titulo:'Nome', tipo:'text'},
+                                imagem: {titulo:'Imagem', tipo:'imagem'},
+                                created_at: {titulo:'Data de criação', tipo:'data'},
+                            }">
+                        </table-component>
                     </template>
                     <template v-slot:rodape>
                         <button type="button" class="btn btn-primary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#modalMarca">Adicionar</button>
@@ -114,7 +122,7 @@
                 axios.get(this.urlBase,config)
                 .then(response=>{
                      this.marcas = response.data
-                     console.log(response.data)
+                    
                 })
                 .catch(errors=>{
                     console.log(errors)
