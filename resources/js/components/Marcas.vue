@@ -35,7 +35,7 @@
                 <!--Fim card de busca-->
                 <card-component titulo="Relação de marcas">
                     <template v-slot:conteudo>
-                        <table-component></table-component>
+                        <table-component :dados="marcas" :titulos="['ID','Nome','Imagem']"></table-component>
                     </template>
                     <template v-slot:rodape>
                         <button type="button" class="btn btn-primary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#modalMarca">Adicionar</button>
