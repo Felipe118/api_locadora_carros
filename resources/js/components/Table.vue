@@ -2,7 +2,7 @@
     <table class="table table-hover">
         <thead>
             <tr>
-            <th scope="col" v-for="t, key in titulos" :key="key">{{t}}</th>
+            <th scope="col" v-for="t, key in titulos" :key="key"></th>
             </tr>
         </thead>
         <tbody>
