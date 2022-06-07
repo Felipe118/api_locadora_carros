@@ -50,7 +50,7 @@
                             <div class="col-10">
                                 <paginate-component>
                                     <li v-for="link, key in marcas.links" :key="key" :class="link.active ? 'page-item active'  : 'page-item' " @click="paginacao(link)">
-                                        <a class="page-link" href="#" v-html="link.label"></a>
+                                        <a class="page-link"  v-html="link.label"></a>
                                     </li>
                                 </paginate-component>
                             </div>
