@@ -14,7 +14,7 @@ class MarcaController extends Controller
     }
     /**
      * Display a listing of the resource.
-     *
+     * 
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -37,7 +37,7 @@ class MarcaController extends Controller
             $marcaRepository->selectAtributos($request->atributos);
         } 
 
-        return response()->json($marcaRepository->getResultado(), 200);
+        return response()->json($marcaRepository->getResultadoPaginado(3), 200);
     }
 
     /**

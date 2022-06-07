@@ -29,9 +29,12 @@ abstract class AbstractRepository {
     public function selectAtributos($atributos) {
         $this->model = $this->model->selectRaw($atributos);
     }
-
+ 
     public function getResultado() {
         return $this->model->get();
+    }
+    public function getResultadoPaginado($numberRegisterPagination) {
+        return $this->model->paginate($numberRegisterPagination);
     }
 }
 

@@ -36,7 +36,7 @@
                 <card-component titulo="Relação de marcas">
                     <template v-slot:conteudo>
                         <table-component 
-                            :dados="marcas" 
+                            :dados="marcas.data" 
                             :titulos="{
                                 id: {titulo:'ID', tipo:'text'},
                                 nome: {titulo:'Nome', tipo:'text'},
@@ -46,7 +46,19 @@
                         </table-component>
                     </template>
                     <template v-slot:rodape>
-                        <button type="button" class="btn btn-primary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#modalMarca">Adicionar</button>
+                        <div class="row">
+                            <div class="col-10">
+                                <paginate-component>
+                                    <li v-for="link, key in marcas.links" :key="key" :class="link.active ? 'page-item active'  : 'page-item' " @click="paginacao(link)">
+                                        <a class="page-link" href="#" v-html="link.label"></a>
+                                    </li>
+                                </paginate-component>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-primary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#modalMarca">Adicionar</button>
+                        </div>
+                      
                     </template>
                 </card-component>
 
@@ -82,7 +94,7 @@
         </modal-component> 
         
     </div>
-</template>
+</template> 
 
 <script>
    export default {
@@ -108,10 +120,17 @@
                arquivoImagem: [],
                transacaoStatus: '',
                transacaoDetalhes: {},
-               marcas:[],
+               marcas:{data: []},
            }
        },
        methods: {
+           paginacao(l){
+               if(l.url){
+                 this.urlBase = l.url
+                 this.carregarLista()
+               }
+              
+           },
            carregarLista(){
                 let config = {
                  headers:{
