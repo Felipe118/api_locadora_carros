@@ -100,16 +100,47 @@
         </modal-component> 
         <!--Fim modal de inclusão de marcas -->
 
-        <!-- -->
+        <!-- Inicio modal de visualizar marcas -->
         <modal-component id="modalMarcaVisualizar" titulo="Visualizar Marca">
             <template v-slot:alerts></template>
-            <template v-slot:content></template>
+            <template v-slot:content>
+                <input-container-component id="ID">
+                    <input type="text" class="form-control" :value="$store.state.item.id" disabled>
+                </input-container-component>
+                 <input-container-component id="Nome da marca">
+                    <input type="text" class="form-control mb-3" :value="$store.state.item.nome" disabled>
+                </input-container-component>
+                 <input-container-component id="Imagem">
+                   <img v-if="$store.state.item.imagem" :src="'storage/'+$store.state.item.imagem" alt="">
+                </input-container-component>
+            </template>
             <template v-slot:rodape>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                 <button type="button" class="btn btn-primary" @click="salvar()">Salvar</button>
             </template>
         </modal-component>
-        <!-- -->
+        <!-- Fim modal de visualizar marcas -->
+
+         <!-- Inicio modal de remoção marcas -->
+        <modal-component id="modalMarcaVisualizar" titulo="Visualizar Marca">
+            <template v-slot:alerts></template>
+            <template v-slot:content>
+                <input-container-component id="ID">
+                    <input type="text" class="form-control" :value="$store.state.item.id" disabled>
+                </input-container-component>
+                 <input-container-component id="Nome da marca">
+                    <input type="text" class="form-control mb-3" :value="$store.state.item.nome" disabled>
+                </input-container-component>
+                 <input-container-component id="Imagem">
+                   <img v-if="$store.state.item.imagem" :src="'storage/'+$store.state.item.imagem" alt="">
+                </input-container-component>
+            </template>
+            <template v-slot:rodape>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" @click="salvar()">Salvar</button>
+            </template>
+        </modal-component>
+        <!-- Fim modal de remoção marcas -->
         
     </div>
 </template> 

@@ -11,9 +11,9 @@ window.Vue = require('vue').default;
 /* VUEX */
 import  VUEX from 'vuex'
 
-const store = new Vuex.Store({
+const store = new VUEX.Store({
     state: {
-        teste:''
+        item:{}
     }
 })
 
