@@ -41,7 +41,7 @@
                             :dados="marcas.data" 
                             :visualizar="{visivel: true, dataToggle:'modal', dataTarget:'#modalMarcaVisualizar'}"
                             :atualizar="true"
-                            :remover="true"
+                            :remover="{visivel: true, dataToggle:'modal', dataTarget:'#modalMarcaRemover'}"
                             :titulos="{
                                 id: {titulo:'ID', tipo:'text'},
                                 nome: {titulo:'Nome', tipo:'text'},
@@ -122,22 +122,22 @@
         <!-- Fim modal de visualizar marcas -->
 
          <!-- Inicio modal de remoção marcas -->
-        <modal-component id="modalMarcaVisualizar" titulo="Visualizar Marca">
-            <template v-slot:alerts></template>
-            <template v-slot:content>
+        <modal-component id="modalMarcaRemover" titulo="Remover Marca">
+            <template v-slot:alerts>
+                <alert-component tipo="success" titulo="Transação realizada com sucesso" :detalhes="$store.state.transacao" v-if="$store.state.transacao.status=='sucesso'"></alert-component>
+                 <alert-component tipo="danger" titulo="Erro na transação" :detalhes="$store.state.transacao" v-if="$store.state.transacao.status=='erro'"></alert-component>
+            </template>
+            <template v-slot:content v-if="$store.state.transacao.status != 'sucesso'">
                 <input-container-component id="ID">
                     <input type="text" class="form-control" :value="$store.state.item.id" disabled>
                 </input-container-component>
                  <input-container-component id="Nome da marca">
                     <input type="text" class="form-control mb-3" :value="$store.state.item.nome" disabled>
                 </input-container-component>
-                 <input-container-component id="Imagem">
-                   <img v-if="$store.state.item.imagem" :src="'storage/'+$store.state.item.imagem" alt="">
-                </input-container-component>
             </template>
             <template v-slot:rodape>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-primary" @click="salvar()">Salvar</button>
+                <button type="button" class="btn btn-danger" @click="remover()" v-if="$store.state.transacao.status != 'sucesso'">Remover</button>
             </template>
         </modal-component>
         <!-- Fim modal de remoção marcas -->
@@ -146,13 +146,11 @@
 </template> 
 
 <script>
+import axios from 'axios'
    export default {
          computed: {
              token(){
-                
-             
-                 let token = document.cookie.split(';').find(indice => {
-                    // console.log(indice,indice.includes('token='))
+                let token = document.cookie.split(';').find(indice => {
                      return indice.includes("token=")
                  })
                  
@@ -176,6 +174,36 @@
            }
        },
        methods: {
+           remover(){
+               let confirmacao = confirm('Tem certeza que deseja remover esse registro')
+                if(!confirmacao){
+                    return false;
+                } 
+                let url = this.urlBase + '/' + this.$store.state.item.id
+                let formData = new FormData();
+                formData.append('_method', 'delete')
+                 let config = {
+                    headers:{ 
+                        'Accept':'application/json',
+                        'Authorization' : this.token
+                    }
+                 }
+
+                 
+                
+                axios.post(url,formData,config)
+                .then(response => {
+                    console.log('Resposta',response.data.msg)
+                    this.$store.state.transacao.status="sucesso"
+                    this.$store.state.transacao.message= response.data.msg
+                    this.carregarLista()
+                })
+                .catch(error => {
+                    this.$store.state.transacao.status="erro"
+                    this.$store.state.transacao.message=error.response.data.erro
+                })
+              console.log('Chegamos até aqui')
+           },
            pesquisar(){
                let filtro = ''
                for(let chave in this.busca){
@@ -213,7 +241,7 @@
                  }
                } 
                let url = this.urlBase + '?' + this.urlPagination + this.urlFiltro
-                axios.get(url)
+                axios.get(url,config)
                 .then(response=>{
                      this.marcas = response.data
                     

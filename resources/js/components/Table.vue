@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th scope="col" v-for="t, key in titulos" :key="key" class="text-uppercase">{{t.titulo}}</th>
-                 <th v-if="visualizar.visivel || atualizar || remover ">Ação</th>
+                 <th v-if="visualizar.visivel || atualizar || remover.visivel ">Ação</th>
             </tr>
               
         </thead>
@@ -16,10 +16,10 @@
                  <img :src="'/storage/'+valor" width="40" height="40">
               </span>
             </td>
-            <td v-if="visualizar.visivel || atualizar || remover "> 
+            <td v-if="visualizar.visivel || atualizar || remover.visivel "> 
                 <button v-if="visualizar.visivel" :data-bs-target="visualizar.dataTarget"  :data-bs-toggle="visualizar.dataToggle" class="btn btn-outline-primary btn-sm" @click="setStore(obj)">Visualizar</button>
                 <button v-if="atualizar" class="btn btn-outline-primary btn-sm">Atualizar</button>
-                <button v-if="remover" class="btn btn-outline-danger btn-sm">Excluir</button>
+                <button v-if="remover" class="btn btn-outline-danger btn-sm" :data-bs-toggle="remover.dataToggle" :data-bs-target="remover.dataTarget" @click="setStore(obj)" >Remover</button>
             </td>
         </tr>
 
@@ -32,6 +32,8 @@
         props:['dados', 'titulos', 'atualizar','visualizar','remover'],
         methods: {
             setStore(obj){
+                this.$store.state.transacao.status = ''
+                this.$store.state.transacao.mensagem = ''
                 this.$store.state.item = obj
             }
         },

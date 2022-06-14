@@ -13,7 +13,8 @@ import  VUEX from 'vuex'
 
 const store = new VUEX.Store({
     state: {
-        item:{}
+        item:{},
+        transacao: {status: '', message: ''}
     }
 })
 
