@@ -40,7 +40,7 @@
                         <table-component 
                             :dados="marcas.data" 
                             :visualizar="{visivel: true, dataToggle:'modal', dataTarget:'#modalMarcaVisualizar'}"
-                            :atualizar="true"
+                            :atualizar="{visivel: true, dataToggle:'modal', dataTarget:'#modalMarcaAtualizar'}"
                             :remover="{visivel: true, dataToggle:'modal', dataTarget:'#modalMarcaRemover'}"
                             :titulos="{
                                 id: {titulo:'ID', tipo:'text'},
@@ -141,6 +141,38 @@
             </template>
         </modal-component>
         <!-- Fim modal de remoção marcas -->
+
+
+        <!--Inicio modal de atualização de marcas -->
+        <modal-component id="modalMarcaAtualizar" titulo="Atualizar marca">
+           <template v-slot:alerts>
+                <!-- <alert-component :detalhes="transacaoDetalhes" tipo="success" titulo="Cadastro da marca realizado com sucesso!"  v-if="transacaoStatus == 'adicionado' "> </alert-component>
+                <alert-component :detalhes="transacaoDetalhes" tipo="danger" titulo="Erro ao tentar cadastrar a marca"  v-if="transacaoStatus == 'erro' " > </alert-component> -->
+           </template>
+            <template v-slot:content>
+                <div class="form-group">
+                    <input-container-component titulo="Nome da marca" id="atualizarNome" id-help="atualizarNomeHelp" texto-ajuda="Opcional. Informe o nome da marca">
+                        <input type="text" class="form-control" id="novoNome" aria-describedby="atualizarNomeHelp" placeholder="Nome da marca" v-model="$store.state.item.nome">
+                    </input-container-component>
+                </div>
+                
+                <div class="form-group">
+                    <input-container-component titulo="Imagem" id="atualizarImagem" id-help="novoImagemHelp" texto-ajuda="Selecione uma imagem no formato PNG">
+                        <input type="file" class="form-control-file mt-3" id="novoImagem" aria-describedby="novoImagemHelp" placeholder="Selecione uma imagem" @change="loadImage($event)">
+                    </input-container-component>
+                </div>
+               
+            </template>
+
+            <template v-slot:rodape>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" @click="atualizar()">Atualizar</button>
+            </template>
+
+        </modal-component> 
+        <!--Fim modal de atualização de marcas -->
+
+        
         
     </div>
 </template> 
@@ -158,7 +190,7 @@ import axios from 'axios'
                  token = 'Bearer '+token
                  return token
              }
-           },
+           }, 
 
        data() {
            return {
@@ -174,6 +206,35 @@ import axios from 'axios'
            }
        },
        methods: {
+            atualizar(){
+                
+                let url = this.urlBase + '/' + this.$store.state.item.id
+                let formData = new FormData();
+                formData.append('_method', 'patch')
+                formData.append('nome', this.$store.state.item.nome)
+                formData.append('imagem', this.arquivoImagem[0])
+                 
+                 let config = {
+                    headers:{ 
+                        'Accept':'application/json',
+                        'Content-Type':'multipart/form-data',
+                        'Authorization' : this.token
+                    }
+                 }
+
+                 
+                
+                axios.post(url,formData,config)
+                .then(response => {
+                    console.log('Resposta',response)
+                    // this.$store.state.transacao.status="sucesso"
+                    // this.$store.state.transacao.message= response.data.msg
+                    this.carregarLista()
+                })
+                .catch(error => {
+                    console.log('erro')
+                })
+            },
            remover(){
                let confirmacao = confirm('Tem certeza que deseja remover esse registro')
                 if(!confirmacao){
@@ -193,7 +254,7 @@ import axios from 'axios'
                 
                 axios.post(url,formData,config)
                 .then(response => {
-                    console.log('Resposta',response.data.msg)
+                    // console.log('Resposta',response.data.msg)
                     this.$store.state.transacao.status="sucesso"
                     this.$store.state.transacao.message= response.data.msg
                     this.carregarLista()
@@ -243,6 +304,7 @@ import axios from 'axios'
                let url = this.urlBase + '?' + this.urlPagination + this.urlFiltro
                 axios.get(url,config)
                 .then(response=>{
+                    console.log(response)
                      this.marcas = response.data
                     
                 })
@@ -273,6 +335,7 @@ import axios from 'axios'
                    this.transacaoDetalhes = {
                        message: `Marca ${response.data.nome} cadastrada`
                    }
+                    this.carregarLista()
                   
                })
                .catch(errors => {
