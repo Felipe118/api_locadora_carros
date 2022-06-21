@@ -305,7 +305,7 @@ import axios from 'axios'
                 axios.get(url,config)
                 .then(response=>{
                     console.log(response)
-                     this.marcas = response.data
+                     this.marcas = response.data 
                     
                 })
                 .catch(errors=>{
@@ -318,8 +318,13 @@ import axios from 'axios'
            salvar(){
               // console.log(this.nomeMarca, this.arquivoImagem)
                let formData = new FormData();
+                 formData.append('_method','patch')
                formData.append('nome', this.nomeMarca)
-               formData.append('imagem', this.arquivoImagem[0])
+
+               if( this.arquivoImagem[0]){
+                formData.append('imagem', this.arquivoImagem[0])
+               }
+          
                 
                let config = {
                  headers:{

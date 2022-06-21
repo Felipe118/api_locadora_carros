@@ -13,7 +13,7 @@
         </div>
         <div class="modal-footer">
            <slot name="rodape"></slot>
-        </div>
+        </div> 
         </div>
     </div>
 </div>
