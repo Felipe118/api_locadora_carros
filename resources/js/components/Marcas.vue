@@ -146,8 +146,8 @@
         <!--Inicio modal de atualização de marcas -->
         <modal-component id="modalMarcaAtualizar" titulo="Atualizar marca">
            <template v-slot:alerts>
-                <!-- <alert-component :detalhes="transacaoDetalhes" tipo="success" titulo="Cadastro da marca realizado com sucesso!"  v-if="transacaoStatus == 'adicionado' "> </alert-component>
-                <alert-component :detalhes="transacaoDetalhes" tipo="danger" titulo="Erro ao tentar cadastrar a marca"  v-if="transacaoStatus == 'erro' " > </alert-component> -->
+                <alert-component tipo="success" titulo="Transação realizada com sucesso" :detalhes="$store.state.transacao" v-if="$store.state.transacao.status == 'sucesso'"></alert-component>
+                <alert-component tipo="danger" titulo="Erro na transação" :detalhes="$store.state.transacao" v-if="$store.state.transacao.status == 'erro'"></alert-component>
            </template>
             <template v-slot:content>
                 <div class="form-group">
@@ -231,11 +231,19 @@ import axios from 'axios'
                 axios.post(url,formData,config)
                 .then(response => {
                     console.log('Resposta',response)
-                    atualizarImagem.value= ''
+                   
+                    this.$store.state.transacao.status="sucesso"
+                    this.$store.state.transacao.message= "Registro de marca atualizado com sucesso"
+
+                     atualizarImagem.value= ''
                     this.carregarLista()
                 })
-                .catch(error => {
-                    console.log('erro')
+                .catch(errors => {
+                    this.$store.state.transacao.status = 'erro'
+                    this.$store.state.transacao.mensagem = errors.response.data.message
+                    this.$store.state.transacao.dados = errors.response.data.errors
+
+                    console.log(errors)
                 })
             },
            remover(){
@@ -259,12 +267,12 @@ import axios from 'axios'
                 .then(response => {
                     // console.log('Resposta',response.data.msg)
                     this.$store.state.transacao.status="sucesso"
-                    this.$store.state.transacao.message= response.data.msg
+                    this.$store.state.transacao.mensagem= response.data.msg
                     this.carregarLista()
                 })
                 .catch(error => {
                     this.$store.state.transacao.status="erro"
-                    this.$store.state.transacao.message=error.response.data.erro
+                    this.$store.state.transacao.mensagem=error.response.data.erro
                 })
               console.log('Chegamos até aqui')
            },
@@ -321,12 +329,10 @@ import axios from 'axios'
            salvar(){
               // console.log(this.nomeMarca, this.arquivoImagem)
                let formData = new FormData();
-                 formData.append('_method','patch')
-               formData.append('nome', this.nomeMarca)
 
-               if( this.arquivoImagem[0]){
-                formData.append('imagem', this.arquivoImagem[0])
-               }
+               formData.append('nome', this.nomeMarca)
+               formData.append('imagem', this.arquivoImagem[0])
+              
           
                 
                let config = {
@@ -343,7 +349,7 @@ import axios from 'axios'
                    this.transacaoDetalhes = {
                        message: `Marca ${response.data.nome} cadastrada`
                    }
-                    this.carregarLista()
+                   
                   
                })
                .catch(errors => {

@@ -14,7 +14,7 @@ import  VUEX from 'vuex'
 const store = new VUEX.Store({
     state: {
         item:{},
-        transacao: {status: '', message: ''}
+        transacao: {status: '', mensagem: '', dados: ''}
     }
 })
 
