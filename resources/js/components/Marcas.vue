@@ -8,7 +8,7 @@
                             <div class="col mb-3">
                                 <input-container-component 
                                     titulo="ID" 
-                                    id="inputId"
+                                    id="inputId" 
                                     id-help="IdHelp"
                                     texto-ajuda="Opcional. Informe o ID da marca"
                                    
@@ -158,7 +158,7 @@
                 
                 <div class="form-group">
                     <input-container-component titulo="Imagem" id="atualizarImagem" id-help="novoImagemHelp" texto-ajuda="Selecione uma imagem no formato PNG">
-                        <input type="file" class="form-control-file mt-3" id="novoImagem" aria-describedby="novoImagemHelp" placeholder="Selecione uma imagem" @change="loadImage($event)">
+                        <input type="file" class="form-control-file mt-3" id="atualizarImagem" aria-describedby="atualizarImagemHelp" placeholder="Selecione uma imagem" @change="loadImage($event)">
                     </input-container-component>
                 </div>
                
@@ -212,7 +212,11 @@ import axios from 'axios'
                 let formData = new FormData();
                 formData.append('_method', 'patch')
                 formData.append('nome', this.$store.state.item.nome)
-                formData.append('imagem', this.arquivoImagem[0])
+
+                if(this.arquivoImagem[0]){
+                    formData.append('imagem', this.arquivoImagem[0])
+                }
+              
                  
                  let config = {
                     headers:{ 
@@ -227,8 +231,7 @@ import axios from 'axios'
                 axios.post(url,formData,config)
                 .then(response => {
                     console.log('Resposta',response)
-                    // this.$store.state.transacao.status="sucesso"
-                    // this.$store.state.transacao.message= response.data.msg
+                    atualizarImagem.value= ''
                     this.carregarLista()
                 })
                 .catch(error => {
