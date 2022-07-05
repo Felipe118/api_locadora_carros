@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers; 
 
 use Illuminate\Http\Request;
 
@@ -14,6 +14,7 @@ class AuthController extends Controller
         $token = auth('api')->attempt($credenciais);
 
         if($token) { //usuário autenticado com sucesso
+            $_SESSION['email'] = $request->all('email');
             return response()->json(['token' => $token]);
 
         } else { //erro de usuário ou senha
@@ -37,7 +38,7 @@ class AuthController extends Controller
     {
        $token = auth('api')->refresh();
 
-       return response()->json(['token' => $$token]);
+       return response()->json(['token' => $token]);
     }
 
     public function me()

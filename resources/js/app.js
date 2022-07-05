@@ -45,6 +45,18 @@ Vue.component('paginate-component', require('./components/Paginate.vue').default
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+Vue.filter('formateDateTime', function(d){
+    if(!d) return ''
+    d = d.split('T')
+
+    let data = d[0]
+    let time = d[1]
+
+    data = data.split('-')
+    data = data[2] + '/' + data[1] + '/' + data[0]
+    time = time.split('.')
+    return data + ' ' + time[0]
+})
 
 const app = new Vue({
     el: '#app',
